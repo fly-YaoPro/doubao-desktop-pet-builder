@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "createdBeforeForwardTests": true,
+  "requiredModes": ["create", "repair", "package"],
+  "requiredCoreStates": ["idle", "blink", "walk-left", "walk-right", "happy", "sleep", "typing", "notify", "grab", "success", "fail", "peek"],
+  "hardGates": {
+    "singleImageUsesImageEditForCore": true,
+    "derivativesReferenceConfirmedCore": true,
+    "independentDerivativeImageGen": false,
+    "deterministicAlphaQA": true,
+    "computerUseForGuiAcceptance": false,
+    "typingReactionDefault": false,
+    "repairUsesCopyByDefault": true,
+    "unverifiedClaimsAllowed": false
+  },
+  "buildTruth": {
+    "windows": "real Windows x64 host",
+    "macos": "real Mac current architecture",
+    "unsigned": true,
+    "universalV1": false
+  }
+}

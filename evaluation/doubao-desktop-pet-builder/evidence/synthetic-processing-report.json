@@ -1,0 +1,280 @@
+{
+  "threshold": 42,
+  "feather": 16,
+  "safeMargin": 24,
+  "assets": [
+    {
+      "ok": true,
+      "name": "core-ip.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "idle.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "blink.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "walk-left.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "walk-right.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "happy.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "sleep.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "typing.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "notify.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "grab.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "success.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "fail.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    },
+    {
+      "ok": true,
+      "name": "peek.png",
+      "sourceSize": [
+        900,
+        900
+      ],
+      "foregroundRatio": 0.34074074074074073,
+      "sourceBounds": [
+        220,
+        150,
+        679,
+        749
+      ],
+      "outputBounds": [
+        78,
+        24,
+        433,
+        487
+      ]
+    }
+  ]
+}

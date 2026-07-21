@@ -1,0 +1,23 @@
+{
+  "platform": "win32",
+  "arch": "x64",
+  "durationMinutes": 0.05,
+  "errors": [],
+  "samples": [
+    {
+      "elapsedMs": 228,
+      "windows": 3,
+      "workingSetKb": 344736
+    },
+    {
+      "elapsedMs": 1231,
+      "windows": 3,
+      "workingSetKb": 489392
+    },
+    {
+      "elapsedMs": 2241,
+      "windows": 3,
+      "workingSetKb": 490960
+    }
+  ]
+}

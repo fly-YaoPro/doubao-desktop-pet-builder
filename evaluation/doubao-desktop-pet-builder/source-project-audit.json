@@ -1,0 +1,173 @@
+{
+  "project": "<workspace>/desktop-pet",
+  "scannedFiles": 10,
+  "checks": {
+    "packageJson": true,
+    "lockFile": true,
+    "petSpec": false,
+    "tests": false
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "rule": "unsafe-html",
+      "message": "innerHTML assignment requires taint review",
+      "file": "dashboard.html",
+      "line": 556
+    },
+    {
+      "severity": "high",
+      "rule": "unsafe-html",
+      "message": "innerHTML assignment requires taint review",
+      "file": "dashboard.html",
+      "line": 560
+    },
+    {
+      "severity": "critical",
+      "rule": "node-integration",
+      "message": "renderer enables Node integration",
+      "file": "main.js",
+      "line": 146
+    },
+    {
+      "severity": "critical",
+      "rule": "node-integration",
+      "message": "renderer enables Node integration",
+      "file": "main.js",
+      "line": 552
+    },
+    {
+      "severity": "critical",
+      "rule": "node-integration",
+      "message": "renderer enables Node integration",
+      "file": "main.js",
+      "line": 623
+    },
+    {
+      "severity": "critical",
+      "rule": "context-isolation",
+      "message": "context isolation is disabled",
+      "file": "main.js",
+      "line": 147
+    },
+    {
+      "severity": "critical",
+      "rule": "context-isolation",
+      "message": "context isolation is disabled",
+      "file": "main.js",
+      "line": 553
+    },
+    {
+      "severity": "critical",
+      "rule": "context-isolation",
+      "message": "context isolation is disabled",
+      "file": "main.js",
+      "line": 624
+    },
+    {
+      "severity": "high",
+      "rule": "hardcoded-drive",
+      "message": "hard-coded Windows drive path",
+      "file": "main.js",
+      "line": 445
+    },
+    {
+      "severity": "medium",
+      "rule": "primary-display-only",
+      "message": "primary-display-only positioning may break multi-monitor behavior",
+      "file": "main.js",
+      "line": 131
+    },
+    {
+      "severity": "medium",
+      "rule": "primary-display-only",
+      "message": "primary-display-only positioning may break multi-monitor behavior",
+      "file": "main.js",
+      "line": 295
+    },
+    {
+      "severity": "medium",
+      "rule": "primary-display-only",
+      "message": "primary-display-only positioning may break multi-monitor behavior",
+      "file": "main.js",
+      "line": 316
+    },
+    {
+      "severity": "medium",
+      "rule": "primary-display-only",
+      "message": "primary-display-only positioning may break multi-monitor behavior",
+      "file": "main.js",
+      "line": 345
+    },
+    {
+      "severity": "medium",
+      "rule": "primary-display-only",
+      "message": "primary-display-only positioning may break multi-monitor behavior",
+      "file": "main.js",
+      "line": 368
+    },
+    {
+      "severity": "medium",
+      "rule": "primary-display-only",
+      "message": "primary-display-only positioning may break multi-monitor behavior",
+      "file": "main.js",
+      "line": 386
+    },
+    {
+      "severity": "medium",
+      "rule": "primary-display-only",
+      "message": "primary-display-only positioning may break multi-monitor behavior",
+      "file": "main.js",
+      "line": 646
+    },
+    {
+      "severity": "high",
+      "rule": "nonexistent-api",
+      "message": "Electron has no dialog.showInputBox API",
+      "file": "main.js",
+      "line": 416
+    },
+    {
+      "severity": "high",
+      "rule": "exception-swallow",
+      "message": "uncaught exception handler may swallow crashes",
+      "file": "main.js",
+      "line": 5
+    },
+    {
+      "severity": "medium",
+      "rule": "missing-script",
+      "message": "missing npm script: check",
+      "file": "package.json",
+      "line": 1
+    },
+    {
+      "severity": "medium",
+      "rule": "missing-script",
+      "message": "missing npm script: test:e2e",
+      "file": "package.json",
+      "line": 1
+    },
+    {
+      "severity": "medium",
+      "rule": "missing-script",
+      "message": "missing npm script: qa:assets",
+      "file": "package.json",
+      "line": 1
+    },
+    {
+      "severity": "medium",
+      "rule": "missing-script",
+      "message": "missing npm script: make:win",
+      "file": "package.json",
+      "line": 1
+    },
+    {
+      "severity": "medium",
+      "rule": "missing-script",
+      "message": "missing npm script: make:mac",
+      "file": "package.json",
+      "line": 1
+    }
+  ]
+}

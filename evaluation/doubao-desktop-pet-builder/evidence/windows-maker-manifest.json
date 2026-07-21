@@ -1,0 +1,14 @@
+{
+  "app": "Desktop Pet",
+  "version": "1.0.0",
+  "platform": "win32",
+  "arch": "x64",
+  "unsigned": true,
+  "artifacts": [
+    {
+      "file": "Desktop Pet-1.0.0-x64-Setup.exe",
+      "bytes": 132214784,
+      "sha256": "36fcf35e260fdcf794829dd76ee410b77c227c6c34e56e552dee6ca2f284abc2"
+    }
+  ]
+}

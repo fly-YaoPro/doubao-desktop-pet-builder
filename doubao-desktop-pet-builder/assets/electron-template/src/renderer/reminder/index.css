@@ -1,0 +1,6 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; background: #fff8ee; color: #20242c; }
+body { margin: 0; }
+main { min-height: 100vh; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+.eyebrow { margin: 0 0 8px; color: #c76519; font-weight: 700; }
+h1 { margin: 0 0 16px; font-size: 24px; overflow-wrap: anywhere; }
+time { color: #636b78; }

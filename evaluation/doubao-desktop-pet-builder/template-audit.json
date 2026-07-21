@@ -1,0 +1,11 @@
+{
+  "project": "doubao-desktop-pet-builder/assets/electron-template",
+  "scannedFiles": 30,
+  "checks": {
+    "packageJson": true,
+    "lockFile": false,
+    "petSpec": true,
+    "tests": true
+  },
+  "findings": []
+}

@@ -1,0 +1,27 @@
+# Local legacy sample: kept as reverse-engineering input, not published.
+/assets/
+/node_modules/
+/main.js
+/index.html
+/dashboard.html
+/reminder.html
+/package.json
+/package-lock.json
+/tray.png
+/batch-remove-bg.js
+/remove-bg.js
+/test-remove-bg.js
+/create-icon.js
+/.agents/
+/.codex/
+
+# Generated files
+**/node_modules/
+**/.webpack/
+**/out/
+**/release/
+**/__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "app": {
+    "name": "Desktop Pet",
+    "appId": "com.example.desktop-pet",
+    "version": "1.0.0",
+    "language": "zh-CN"
+  },
+  "targets": {
+    "windows": { "enabled": true, "arch": "x64" },
+    "macos": { "enabled": true, "arch": "current" }
+  },
+  "character": {
+    "inputType": "single-image",
+    "coreAsset": "core-ip.png",
+    "preserveTraits": [],
+    "style": "balanced-cartoon",
+    "mirrorSafe": false
+  },
+  "features": {
+    "transparentWindow": true,
+    "drag": true,
+    "tray": true,
+    "edgeSnap": true,
+    "reminders": true,
+    "filePocket": true,
+    "dashboard": true,
+    "typingReaction": false
+  },
+  "states": [
+    { "id": "idle", "frames": ["idle.png"], "frameDurationMs": 900, "loop": true, "priority": 10, "interrupt": "resume", "cooldownMs": 0, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": false },
+    { "id": "blink", "frames": ["blink.png"], "frameDurationMs": 120, "loop": false, "priority": 20, "interrupt": "resume", "cooldownMs": 3000, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": true },
+    { "id": "walk-left", "frames": ["walk-left.png"], "frameDurationMs": 180, "loop": true, "priority": 35, "interrupt": "restart", "cooldownMs": 0, "direction": "left", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": false },
+    { "id": "walk-right", "frames": ["walk-right.png"], "frameDurationMs": 180, "loop": true, "priority": 35, "interrupt": "restart", "cooldownMs": 0, "direction": "right", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": false },
+    { "id": "happy", "frames": ["happy.png"], "frameDurationMs": 220, "loop": false, "priority": 55, "interrupt": "resume", "cooldownMs": 400, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": true },
+    { "id": "sleep", "frames": ["sleep.png"], "frameDurationMs": 1200, "loop": true, "priority": 12, "interrupt": "restart", "cooldownMs": 5000, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": false },
+    { "id": "typing", "frames": ["typing.png"], "frameDurationMs": 150, "loop": true, "priority": 30, "interrupt": "resume", "cooldownMs": 120, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": true },
+    { "id": "notify", "frames": ["notify.png"], "frameDurationMs": 200, "loop": false, "priority": 70, "interrupt": "resume", "cooldownMs": 500, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": true },
+    { "id": "grab", "frames": ["grab.png"], "frameDurationMs": 120, "loop": true, "priority": 100, "interrupt": "restart", "cooldownMs": 0, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": false },
+    { "id": "success", "frames": ["success.png"], "frameDurationMs": 220, "loop": false, "priority": 60, "interrupt": "resume", "cooldownMs": 500, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": true },
+    { "id": "fail", "frames": ["fail.png"], "frameDurationMs": 220, "loop": false, "priority": 60, "interrupt": "resume", "cooldownMs": 500, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": true },
+    { "id": "peek", "frames": ["peek.png"], "frameDurationMs": 800, "loop": true, "priority": 15, "interrupt": "restart", "cooldownMs": 1000, "direction": "neutral", "anchor": { "x": 0.5, "y": 0.95 }, "mirrorSafe": false }
+  ],
+  "storage": {
+    "userData": "app-user-data",
+    "filePocket": "documents-app-name"
+  },
+  "build": {
+    "makers": ["squirrel", "dmg", "zip"],
+    "windowsArch": "x64",
+    "macosArch": "current",
+    "unsigned": true
+  }
+}

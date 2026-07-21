@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://doubao.local/schemas/desktop-pet/pet-spec.schema.json",
+  "title": "Doubao Desktop Pet Specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "app", "targets", "character", "features", "states", "storage", "build"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "app": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "appId", "version", "language"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "appId": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z0-9-]+)+$" },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$" },
+        "language": { "type": "string", "minLength": 2, "maxLength": 16 }
+      }
+    },
+    "targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["windows", "macos"],
+      "properties": {
+        "windows": { "$ref": "#/$defs/target" },
+        "macos": { "$ref": "#/$defs/target" }
+      }
+    },
+    "character": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inputType", "coreAsset", "preserveTraits", "style", "mirrorSafe"],
+      "properties": {
+        "inputType": { "enum": ["single-image", "action-pack", "text", "existing-project"] },
+        "coreAsset": { "$ref": "#/$defs/safeRelativePath" },
+        "preserveTraits": { "type": "array", "items": { "type": "string", "minLength": 1 }, "maxItems": 20 },
+        "style": { "enum": ["preserve", "balanced-cartoon", "key-elements", "custom"] },
+        "mirrorSafe": { "type": "boolean" }
+      }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transparentWindow", "drag", "tray", "edgeSnap", "reminders", "filePocket", "dashboard", "typingReaction"],
+      "properties": {
+        "transparentWindow": { "const": true },
+        "drag": { "type": "boolean" },
+        "tray": { "type": "boolean" },
+        "edgeSnap": { "type": "boolean" },
+        "reminders": { "type": "boolean" },
+        "filePocket": { "type": "boolean" },
+        "dashboard": { "type": "boolean" },
+        "typingReaction": { "type": "boolean", "default": false }
+      }
+    },
+    "states": {
+      "type": "array",
+      "minItems": 12,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/state" }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["userData", "filePocket"],
+      "properties": {
+        "userData": { "const": "app-user-data" },
+        "filePocket": { "const": "documents-app-name" }
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["makers", "windowsArch", "macosArch", "unsigned"],
+      "properties": {
+        "makers": {
+          "type": "array",
+          "minItems": 3,
+          "items": { "enum": ["squirrel", "dmg", "zip"] },
+          "allOf": [
+            { "contains": { "const": "squirrel" } },
+            { "contains": { "const": "dmg" } },
+            { "contains": { "const": "zip" } }
+          ]
+        },
+        "windowsArch": { "const": "x64" },
+        "macosArch": { "enum": ["current", "arm64", "x64"] },
+        "unsigned": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "arch"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "arch": { "enum": ["x64", "arm64", "current"] }
+      }
+    },
+    "safeRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "frames", "frameDurationMs", "loop", "priority", "interrupt", "cooldownMs", "direction", "anchor", "mirrorSafe"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "frames": { "type": "array", "minItems": 1, "maxItems": 24, "items": { "$ref": "#/$defs/safeRelativePath" } },
+        "frameDurationMs": { "type": "integer", "minimum": 40, "maximum": 10000 },
+        "loop": { "type": "boolean" },
+        "priority": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "interrupt": { "enum": ["resume", "restart", "discard", "block"] },
+        "cooldownMs": { "type": "integer", "minimum": 0, "maximum": 3600000 },
+        "direction": { "enum": ["neutral", "left", "right"] },
+        "anchor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["x", "y"],
+          "properties": {
+            "x": { "type": "number", "minimum": 0, "maximum": 1 },
+            "y": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "mirrorSafe": { "type": "boolean" }
+      }
+    }
+  }
+}

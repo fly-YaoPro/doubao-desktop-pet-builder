@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-07-21T14:50:38.606Z",
+  "passed": true,
+  "assets": [
+    {
+      "state": "idle",
+      "frame": "idle.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.5083045959472656,
+      "bounds": [
+        42,
+        24,
+        469,
+        487
+      ]
+    },
+    {
+      "state": "blink",
+      "frame": "blink.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.619659423828125,
+      "bounds": [
+        46,
+        24,
+        465,
+        487
+      ]
+    },
+    {
+      "state": "walk-left",
+      "frame": "walk-left.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.5855674743652344,
+      "bounds": [
+        24,
+        73,
+        487,
+        487
+      ]
+    },
+    {
+      "state": "walk-right",
+      "frame": "walk-right.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.5763473510742188,
+      "bounds": [
+        24,
+        67,
+        487,
+        487
+      ]
+    },
+    {
+      "state": "happy",
+      "frame": "happy.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.5205421447753906,
+      "bounds": [
+        41,
+        24,
+        470,
+        487
+      ]
+    },
+    {
+      "state": "sleep",
+      "frame": "sleep.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.6348724365234375,
+      "bounds": [
+        24,
+        74,
+        487,
+        487
+      ]
+    },
+    {
+      "state": "typing",
+      "frame": "typing.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.5416831970214844,
+      "bounds": [
+        30,
+        24,
+        481,
+        487
+      ]
+    },
+    {
+      "state": "notify",
+      "frame": "notify.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.5791358947753906,
+      "bounds": [
+        31,
+        24,
+        481,
+        487
+      ]
+    },
+    {
+      "state": "grab",
+      "frame": "grab.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.6425514221191406,
+      "bounds": [
+        91,
+        24,
+        420,
+        487
+      ]
+    },
+    {
+      "state": "success",
+      "frame": "success.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.5275192260742188,
+      "bounds": [
+        49,
+        24,
+        462,
+        487
+      ]
+    },
+    {
+      "state": "fail",
+      "frame": "fail.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.47589111328125,
+      "bounds": [
+        31,
+        24,
+        481,
+        487
+      ]
+    },
+    {
+      "state": "peek",
+      "frame": "peek.png",
+      "ok": true,
+      "errors": [],
+      "transparentRatio": 0.7570610046386719,
+      "bounds": [
+        141,
+        24,
+        370,
+        487
+      ]
+    }
+  ]
+}

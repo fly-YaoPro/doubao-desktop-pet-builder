@@ -1,0 +1,12 @@
+{
+  "purpose": "offline regression only",
+  "deliveryAllowed": false,
+  "source": "workspace desktop-pet sample",
+  "requiredRights": "Confirm user owns or is authorized to use the source material before public submission.",
+  "size": [512, 512],
+  "anchor": { "x": 0.5, "y": 0.95 },
+  "states": [
+    "idle", "blink", "walk-left", "walk-right", "happy", "sleep",
+    "typing", "notify", "grab", "success", "fail", "peek"
+  ]
+}

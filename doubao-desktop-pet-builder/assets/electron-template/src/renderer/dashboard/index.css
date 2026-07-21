@@ -1,0 +1,22 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; background: #f4f5f7; color: #20242c; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 720px; margin: 0 auto; padding: 28px; }
+header { margin-bottom: 24px; }
+.eyebrow { margin: 0 0 4px; color: #c76519; font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+h1 { margin: 0; font-size: 30px; }
+h2 { margin: 0 0 16px; font-size: 18px; }
+section { margin-bottom: 18px; padding: 20px; border: 1px solid #e2e4e8; border-radius: 16px; background: #fff; }
+form, label { display: grid; gap: 7px; }
+form { gap: 14px; }
+input { width: 100%; padding: 10px 12px; border: 1px solid #cfd3da; border-radius: 9px; font: inherit; }
+button { padding: 10px 14px; border: 0; border-radius: 9px; background: #20242c; color: #fff; font: inherit; cursor: pointer; }
+button.secondary { background: #e4e7eb; color: #20242c; }
+.toggle { grid-template-columns: auto 1fr; align-items: center; margin: 12px 0; }
+.toggle input { width: auto; }
+#reminder-list { padding: 0; list-style: none; }
+#reminder-list li { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eceef1; }
+#reminder-list small { display: block; color: #6b7280; margin-top: 3px; }
+#reminder-list button { padding: 6px 9px; background: #f2d8d8; color: #7f1d1d; }
+.status { min-height: 1.2em; color: #6b7280; font-size: 13px; overflow-wrap: anywhere; }
+footer { display: flex; gap: 10px; }

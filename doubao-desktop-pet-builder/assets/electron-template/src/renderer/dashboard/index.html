@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>桌宠面板</title>
+</head>
+<body>
+  <main>
+    <header><p class="eyebrow">DESKTOP PET</p><h1>控制面板</h1></header>
+    <section>
+      <h2>新提醒</h2>
+      <form id="reminder-form">
+        <label>内容<input id="reminder-text" maxlength="200" required></label>
+        <label>时间<input id="reminder-time" type="datetime-local" required></label>
+        <button type="submit">保存提醒</button>
+      </form>
+      <ul id="reminder-list"></ul>
+    </section>
+    <section>
+      <h2>设置</h2>
+      <label class="toggle"><input id="edge-snap" type="checkbox"> 自动贴边</label>
+      <label class="toggle"><input id="always-on-top" type="checkbox"> 始终置顶</label>
+      <label class="toggle"><input id="typing-reaction" type="checkbox"> 全局打字响应（不记录键值）</label>
+      <p id="typing-status" class="status"></p>
+    </section>
+    <footer><button id="open-pocket" type="button">打开文件口袋</button><button id="hide-pet" type="button" class="secondary">隐藏桌宠</button></footer>
+  </main>
+</body>
+</html>
