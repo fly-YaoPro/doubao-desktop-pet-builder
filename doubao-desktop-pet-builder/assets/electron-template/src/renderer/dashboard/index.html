@@ -2,30 +2,64 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>桌宠面板</title>
+  <title>桌宠小屋</title>
 </head>
 <body>
-  <main>
-    <header><p class="eyebrow">DESKTOP PET</p><h1>控制面板</h1></header>
-    <section>
-      <h2>新提醒</h2>
+  <main class="app-shell">
+    <header class="titlebar">
+      <div class="identity">
+        <div class="avatar-wrap"><img id="character-avatar" alt="桌宠头像"></div>
+        <div><h1 id="character-name">桌宠</h1><p id="character-personality"></p></div>
+      </div>
+      <button id="close-dashboard" class="icon-button" type="button" aria-label="关闭面板">×</button>
+    </header>
+
+    <section class="bond-card" aria-label="陪伴状态">
+      <div class="bond-title"><strong>好感度</strong><span id="level-label">Lv.1 新朋友</span></div>
+      <div class="progress-track"><div id="affection-progress" class="progress-value"></div></div>
+      <p id="affection-copy">慢慢熟悉彼此吧</p>
+    </section>
+
+    <section class="metrics" aria-label="今日数据">
+      <article><strong id="mood-value">80</strong><span>心情值</span></article>
+      <article><strong id="interaction-value">0</strong><span>今日互动</span></article>
+      <article><strong id="companion-value">0m</strong><span>陪伴时长</span></article>
+    </section>
+
+    <section id="interaction-section" class="panel">
+      <div class="section-heading"><div><p class="eyebrow">一起玩</p><h2>和它互动</h2></div><span>动作与反馈都会真正触发</span></div>
+      <div id="interaction-actions" class="interaction-grid"></div>
+    </section>
+
+    <nav class="tabs" aria-label="面板页面">
+      <button class="tab active" type="button" data-tab="reminders">提醒</button>
+      <button class="tab" type="button" data-tab="settings">设置</button>
+    </nav>
+
+    <section id="reminders-panel" class="panel tab-panel active">
       <form id="reminder-form">
-        <label>内容<input id="reminder-text" maxlength="200" required></label>
-        <label>时间<input id="reminder-time" type="datetime-local" required></label>
-        <button type="submit">保存提醒</button>
+        <label>提醒内容<input id="reminder-text" maxlength="200" placeholder="比如：该喝水啦" required></label>
+        <label>提醒时间<input id="reminder-time" type="datetime-local" required></label>
+        <button class="primary-button" type="submit">保存提醒</button>
       </form>
       <ul id="reminder-list"></ul>
     </section>
-    <section>
-      <h2>设置</h2>
-      <label class="toggle"><input id="edge-snap" type="checkbox"> 自动贴边</label>
-      <label class="toggle"><input id="always-on-top" type="checkbox"> 始终置顶</label>
-      <label class="toggle"><input id="typing-reaction" type="checkbox"> 全局打字响应（不记录键值）</label>
+
+    <section id="settings-panel" class="panel tab-panel">
+      <label class="setting-row"><span><strong>自动贴边</strong><small>拖到屏幕边缘时自动收好</small></span><input id="edge-snap" type="checkbox"></label>
+      <label class="setting-row"><span><strong>始终置顶</strong><small>让桌宠保持在其他窗口上方</small></span><input id="always-on-top" type="checkbox"></label>
+      <label class="setting-row"><span><strong>鼠标穿透</strong><small>开启后请从托盘菜单关闭</small></span><input id="click-through" type="checkbox"></label>
+      <label class="setting-row"><span><strong>打字响应</strong><small>仅感知活动，不记录按键内容</small></span><input id="typing-reaction" type="checkbox"></label>
+      <label class="setting-row select-row"><span><strong>桌宠大小</strong><small>修改后立即生效</small></span><select id="pet-scale"><option value="0.65">迷你</option><option value="0.8">小</option><option value="1">标准</option><option value="1.2">大</option></select></label>
       <p id="typing-status" class="status"></p>
     </section>
-    <footer><button id="open-pocket" type="button">打开文件口袋</button><button id="hide-pet" type="button" class="secondary">隐藏桌宠</button></footer>
+
+    <footer>
+      <button id="open-pocket" type="button" class="soft-button">打开文件口袋</button>
+      <button id="hide-pet" type="button" class="soft-button">暂时隐藏桌宠</button>
+    </footer>
   </main>
 </body>
 </html>

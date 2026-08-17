@@ -1,8 +1,30 @@
 const path = require('node:path');
 const spec = require('./pet-spec.json');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
+const buildMode = process.env.PET_BUILD_MODE || 'all';
+
+const makers = [];
+if (buildMode === 'all' || buildMode === 'installer') makers.push({
+  name: '@electron-forge/maker-squirrel',
+  platforms: ['win32'],
+  config: {
+    name: spec.app.appId.replace(/[^a-zA-Z0-9]/g, '_'),
+    setupExe: `${spec.app.name}-${spec.app.version}-x64-Setup.exe`,
+  },
+});
+if (buildMode === 'all' || buildMode === 'dmg') makers.push({
+  name: '@electron-forge/maker-dmg',
+  platforms: ['darwin'],
+  config: { format: 'ULFO', name: spec.app.name },
+});
+if (buildMode === 'all' || buildMode === 'portable') makers.push({
+  name: '@electron-forge/maker-zip',
+  platforms: ['win32', 'darwin'],
+  config: {},
+});
 
 module.exports = {
+  outDir: process.env.PET_BUILD_OUT || 'out',
   packagerConfig: {
     asar: true,
     appBundleId: spec.app.appId,
@@ -11,26 +33,7 @@ module.exports = {
     osxSign: false,
   },
   rebuildConfig: {},
-  makers: [
-    {
-      name: '@electron-forge/maker-squirrel',
-      platforms: ['win32'],
-      config: {
-        name: spec.app.appId.replace(/[^a-zA-Z0-9]/g, '_'),
-        setupExe: `${spec.app.name}-${spec.app.version}-x64-Setup.exe`,
-      },
-    },
-    {
-      name: '@electron-forge/maker-dmg',
-      platforms: ['darwin'],
-      config: { format: 'ULFO', name: spec.app.name },
-    },
-    {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
-      config: {},
-    },
-  ],
+  makers,
   plugins: [
     { name: '@electron-forge/plugin-auto-unpack-natives', config: {} },
     {

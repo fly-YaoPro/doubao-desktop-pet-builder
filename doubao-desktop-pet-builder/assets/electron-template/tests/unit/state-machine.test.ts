@@ -4,7 +4,7 @@ import type { PetStateSpec } from '../../src/shared/contracts';
 import { StateController, TimerRegistry } from '../../src/shared/state-machine';
 
 const state = (id: string, priority: number, interrupt: PetStateSpec['interrupt'] = 'resume'): PetStateSpec => ({
-  id, frames: [`${id}.png`], frameDurationMs: 100, loop: true, priority, interrupt, cooldownMs: 0, direction: 'neutral', anchor: { x: 0.5, y: 0.95 }, mirrorSafe: true,
+  id, triggers: [`test:${id}`], frames: [`${id}.png`], frameDurationMs: 100, loop: true, priority, interrupt, cooldownMs: 0, direction: 'neutral', anchor: { x: 0.5, y: 0.95 }, mirrorSafe: true,
 });
 
 test('higher priority preempts and release resumes previous state', () => {

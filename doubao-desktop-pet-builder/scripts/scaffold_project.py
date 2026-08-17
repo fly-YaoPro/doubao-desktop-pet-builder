@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -62,11 +63,11 @@ def main() -> int:
         return 5
 
     shutil.copytree(TEMPLATE, output, ignore=shutil.ignore_patterns(".gitkeep", "node_modules", "out", "release", ".webpack"))
-    pet_dir = output / "src" / "assets" / "pet"
-    pet_dir.mkdir(parents=True, exist_ok=True)
+    incoming_dir = output / "incoming-assets"
+    incoming_dir.mkdir(parents=True, exist_ok=True)
     for name in sorted(required):
         source = asset_source / name
-        target = pet_dir / name
+        target = incoming_dir / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
 
@@ -91,6 +92,32 @@ def main() -> int:
     if args.use_regression_fixture:
         marker = output / "REGRESSION_FIXTURE_ONLY.txt"
         marker.write_text("This project uses the orange-cat regression fixture. Replace it before user delivery.\n", encoding="utf-8")
+
+    copied_assets = []
+    for name in sorted(required):
+        target = incoming_dir / name
+        copied_assets.append({
+            "path": name,
+            "bytes": target.stat().st_size,
+            "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+        })
+    scaffold_report = {
+        "schemaVersion": spec["schemaVersion"],
+        "appId": spec["app"]["appId"],
+        "specSha256": hashlib.sha256((output / "pet-spec.json").read_bytes()).hexdigest(),
+        "assetCount": len(copied_assets),
+        "assetStage": "incoming-assets; run npm run process:assets before check/dev",
+        "assets": copied_assets,
+    }
+    qa_dir = output / "qa"
+    qa_dir.mkdir(parents=True, exist_ok=True)
+    (qa_dir / "scaffold-report.json").write_text(json.dumps(scaffold_report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    roundtrip_spec = json.loads((output / "pet-spec.json").read_text(encoding="utf-8"))
+    roundtrip_package = json.loads(package_path.read_text(encoding="utf-8"))
+    if roundtrip_spec != spec or roundtrip_package.get("productName") != spec["app"]["name"]:
+        print("UTF-8 round-trip verification failed after scaffolding", file=sys.stderr)
+        return 6
 
     print(f"Created desktop-pet project: {output}")
     return 0
