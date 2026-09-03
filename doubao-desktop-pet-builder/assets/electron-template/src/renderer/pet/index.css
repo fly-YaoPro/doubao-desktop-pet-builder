@@ -1,9 +1,43 @@
-:root { color-scheme: light; }
+:root {
+  color-scheme: light;
+  --primary: #ff8a24;
+  --surface: #ffffff;
+  --text: #3a2a20;
+  --radius: 20px;
+  --breath-x: .988;
+  --breath-y: 1.022;
+  --breath-period: 3200ms;
+  --squash-x: 1.08;
+  --squash-y: .92;
+  --squash-duration: 320ms;
+}
 * { box-sizing: border-box; user-select: none; -webkit-user-drag: none; }
-html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: transparent; }
-body { font-family: system-ui, sans-serif; }
-#pet { position: relative; width: 100%; height: 100%; display: grid; place-items: end center; touch-action: none; cursor: grab; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: transparent !important; }
+body { font-family: "Microsoft YaHei UI", "PingFang SC", system-ui, sans-serif; }
+#pet { position: relative; width: 100%; height: 100%; touch-action: none; cursor: grab; }
 #pet.dragging { cursor: grabbing; }
-#pet-image { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; pointer-events: none; filter: drop-shadow(0 8px 8px rgba(0,0,0,.22)); }
-#drop-hint { position: absolute; left: 16px; right: 16px; bottom: 12px; padding: 8px; border-radius: 12px; text-align: center; color: #fff; background: rgba(28,31,38,.82); font-size: 13px; opacity: 0; transform: translateY(8px); transition: .15s ease; }
+#motion-layer, #breath-layer { position: absolute; inset: 0; display: grid; place-items: end center; transform-origin: 50% 95%; }
+#breath-layer { animation: pet-breathe var(--breath-period) ease-in-out infinite; }
+#pet[data-breathing="off"] #breath-layer { animation: none; }
+#motion-layer.pop { animation: pet-pop var(--squash-duration) cubic-bezier(.2,.9,.25,1); }
+#pet-image { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; pointer-events: none; filter: drop-shadow(0 9px 9px rgba(62,39,24,.22)); }
+#bubble { position: absolute; z-index: 5; left: 50%; top: 4px; max-width: calc(100% - 28px); padding: 8px 12px; border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent); border-radius: var(--radius); color: var(--text); background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: 0 8px 24px rgba(69,45,28,.16); font-size: 13px; line-height: 1.35; opacity: 0; transform: translate(-50%, 6px) scale(.96); transition: opacity .16s ease, transform .2s ease; pointer-events: none; overflow-wrap: anywhere; }
+#bubble.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
+#bubble::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 10px; height: 10px; background: var(--surface); border-right: 1px solid color-mix(in srgb, var(--primary) 35%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--primary) 35%, transparent); transform: translateX(-50%) rotate(45deg); }
+#drop-hint { position: absolute; z-index: 6; left: 16px; right: 16px; bottom: 10px; padding: 9px; border-radius: var(--radius); text-align: center; color: #fff; background: color-mix(in srgb, var(--primary) 92%, #000); box-shadow: 0 8px 20px rgba(0,0,0,.16); font-size: 13px; opacity: 0; transform: translateY(8px); transition: .15s ease; pointer-events: none; }
 #pet.drop-ready #drop-hint { opacity: 1; transform: translateY(0); }
+#pet[data-file-pocket="off"] #drop-hint { display: none; }
+#asset-error { position: absolute; z-index: 20; inset: 20px; display: grid; place-items: center; padding: 16px; border: 2px solid #b42318; border-radius: var(--radius); color: #7a271a; background: rgba(255, 244, 242, .97); box-shadow: 0 10px 30px rgba(80, 20, 12, .22); font-size: 13px; line-height: 1.45; text-align: center; overflow-wrap: anywhere; }
+#asset-error[hidden] { display: none; }
+@keyframes pet-breathe {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(var(--breath-x), var(--breath-y)); }
+}
+@keyframes pet-pop {
+  0%, 100% { transform: scale(1, 1); }
+  32% { transform: scale(var(--squash-x), var(--squash-y)); }
+  62% { transform: scale(.97, 1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #breath-layer, #motion-layer.pop { animation: none; }
+}

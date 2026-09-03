@@ -8,9 +8,30 @@
 </head>
 <body>
   <main>
-    <p class="eyebrow">时间到了</p>
-    <h1 id="reminder-text">提醒</h1>
-    <time id="reminder-time"></time>
+    <header><div><p class="eyebrow" id="window-eyebrow">小提醒</p><h1 id="window-title">添加提醒</h1></div><button id="close-reminder" class="icon-button" type="button" aria-label="关闭">×</button></header>
+
+    <section id="compose-view">
+      <div class="quick-times" aria-label="快速设置">
+        <button type="button" data-minutes="1">1 分钟</button>
+        <button type="button" data-minutes="5" class="selected">5 分钟</button>
+        <button type="button" data-minutes="10">10 分钟</button>
+        <button type="button" data-minutes="30">30 分钟</button>
+        <button type="button" data-minutes="60">1 小时</button>
+        <button type="button" data-minutes="custom">自定义</button>
+      </div>
+      <form id="quick-reminder-form">
+        <input id="quick-reminder-text" maxlength="200" required placeholder="比如：该喝水啦">
+        <input id="custom-reminder-time" type="datetime-local" hidden>
+        <div class="actions"><button id="cancel-compose" type="button" class="secondary">取消</button><button type="submit" class="primary">确定</button></div>
+      </form>
+    </section>
+
+    <section id="due-view" hidden>
+      <p id="reminder-character-copy"></p>
+      <h2 id="reminder-text">提醒</h2>
+      <time id="reminder-time"></time>
+      <button id="dismiss-reminder" type="button" class="primary full">知道啦</button>
+    </section>
   </main>
 </body>
 </html>

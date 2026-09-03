@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron';
-import type { PetAPI, Reminder, Settings, TypingStatus } from './shared/contracts';
+import type { InteractionResult, InteractionSpec, PetAPI, PetStats, Reminder, RuntimeFailureReport, RuntimeReadyReport, Settings, StateActivity, TypingStatus } from './shared/contracts';
 
 function subscribe<T>(channel: string, listener: (value: T) => void): () => void {
   const wrapped = (_event: Electron.IpcRendererEvent, value: T) => listener(value);
@@ -17,6 +17,11 @@ const api: PetAPI = {
     save: (input) => ipcRenderer.invoke('reminders:save', input) as Promise<Reminder>,
     remove: (id) => ipcRenderer.invoke('reminders:remove', id) as Promise<boolean>,
   },
+  interactions: {
+    list: () => ipcRenderer.invoke('interactions:list') as Promise<InteractionSpec[]>,
+    trigger: (id) => ipcRenderer.invoke('interactions:trigger', id) as Promise<InteractionResult>,
+    stats: () => ipcRenderer.invoke('interactions:stats') as Promise<PetStats>,
+  },
   files: {
     getPathForFile: (file) => webUtils.getPathForFile(file),
     put: (paths) => ipcRenderer.invoke('files:put', paths),
@@ -26,12 +31,22 @@ const api: PetAPI = {
     beginDrag: () => ipcRenderer.invoke('window:drag-begin') as Promise<void>,
     updateDrag: () => ipcRenderer.invoke('window:drag-update') as Promise<void>,
     endDrag: () => ipcRenderer.invoke('window:drag-end') as Promise<void>,
+    showContextMenu: () => ipcRenderer.invoke('window:show-context-menu') as Promise<void>,
+    showReminder: () => ipcRenderer.invoke('window:show-reminder') as Promise<void>,
     showDashboard: () => ipcRenderer.invoke('window:show-dashboard') as Promise<void>,
+    hideReminder: () => ipcRenderer.invoke('window:hide-reminder') as Promise<void>,
+    hideDashboard: () => ipcRenderer.invoke('window:hide-dashboard') as Promise<void>,
     hidePet: () => ipcRenderer.invoke('window:hide-pet') as Promise<void>,
   },
+  runtime: {
+    ready: (report: RuntimeReadyReport) => ipcRenderer.invoke('runtime:ready', report) as Promise<void>,
+    fail: (report: RuntimeFailureReport) => ipcRenderer.invoke('runtime:fail', report) as Promise<void>,
+  },
   events: {
-    onStateActivity: (listener) => subscribe<{ kind: string }>('state:activity', listener),
+    onStateActivity: (listener) => subscribe<StateActivity>('state:activity', listener),
     onReminder: (listener) => subscribe<Reminder>('reminder:due', listener),
+    onReminderCompose: (listener) => subscribe<void>('reminder:compose', listener),
+    onStats: (listener) => subscribe<PetStats>('pet:stats', listener),
     onTypingStatus: (listener) => subscribe<TypingStatus>('typing:status', listener),
   },
 };

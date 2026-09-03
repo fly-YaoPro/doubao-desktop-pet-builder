@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from pathlib import Path
 
 
-SKIP_DIRS = {"node_modules", ".git", ".webpack", "out", "release", "dist", "build"}
+SKIP_DIRS = {"node_modules", ".git", ".webpack", ".build", "out", "release", "dist", "build", "qa"}
 TEXT_SUFFIXES = {".js", ".cjs", ".mjs", ".ts", ".tsx", ".html", ".json"}
 RULES = [
     ("critical", "node-integration", re.compile(r"nodeIntegration\s*:\s*true"), "renderer enables Node integration"),
@@ -22,7 +23,10 @@ RULES = [
     ("medium", "primary-display-only", re.compile(r"getPrimaryDisplay\s*\("), "primary-display-only positioning may break multi-monitor behavior"),
     ("medium", "file-path", re.compile(r"\bFile\.path\b|\.path\s*\)"), "browser File.path assumption requires Electron version review"),
     ("high", "nonexistent-api", re.compile(r"dialog\.showInputBox\s*\("), "Electron has no dialog.showInputBox API"),
+    ("high", "nonrecursive-assets", re.compile(r"require\.context\(\s*['\"]\.\.\/\.\.\/assets\/pet['\"]\s*,\s*false\s*,"), "runtime asset import does not recurse into spec subdirectories"),
+    ("high", "ignored-log-failure", re.compile(r"catch\s*\{[^}]{0,240}日志写入失败不影响主功能", re.DOTALL), "logging failure is swallowed while the app may still be reported ready"),
 ]
+MOJIBAKE = re.compile(r"\ufffd|锛|鈥|灏忛噾|妗屽疇|鍠傚皬|鎽告懜")
 
 
 def source_files(root: Path, excluded: set[str]):
@@ -55,9 +59,11 @@ def main() -> int:
             for match in pattern.finditer(text):
                 line = text.count("\n", 0, match.start()) + 1
                 findings.append({"severity": severity, "rule": rule, "message": message, "file": str(path.relative_to(root)), "line": line})
+        if MOJIBAKE.search(text) and "mojibakePattern" not in text and "MOJIBAKE =" not in text:
+            findings.append({"severity": "high", "rule": "mojibake", "message": "probable UTF-8/GBK mojibake", "file": str(path.relative_to(root)), "line": 1})
         for match in re.finditer(r"process\.on\(\s*['\"]uncaughtException['\"][\s\S]{0,1200}?\n\s*\}\s*\);", text):
             body = match.group(0)
-            if not re.search(r"\b(?:app|process)\.exit\s*\(|\bthrow\b|\.finally\s*\(", body):
+            if not re.search(r"\b(?:app|process)\.exit\s*\(|\bfatalExit\s*\(|\bthrow\b|\.finally\s*\(", body):
                 line = text.count("\n", 0, match.start()) + 1
                 findings.append({"severity": "high", "rule": "exception-swallow", "message": "uncaught exception handler may swallow crashes", "file": str(path.relative_to(root)), "line": line})
 
@@ -75,9 +81,113 @@ def main() -> int:
             scripts = package.get("scripts", {}) if isinstance(package.get("scripts"), dict) else {}
         except (OSError, json.JSONDecodeError):
             findings.append({"severity": "critical", "rule": "invalid-package", "message": "package.json is not valid JSON", "file": "package.json", "line": 1})
-    for name in ("check", "test", "test:e2e", "qa:assets", "make:win", "make:mac"):
+    for name in ("check", "test", "test:e2e", "qa:assets", "qa:experience", "qa:ui", "preflight", "package:win", "make:win", "portable:win", "make:mac", "portable:mac"):
         if name not in scripts:
             findings.append({"severity": "medium", "rule": "missing-script", "message": f"missing npm script: {name}", "file": "package.json", "line": 1})
+
+    spec_path = root / "pet-spec.json"
+    if spec_path.is_file():
+        try:
+            spec = json.loads(spec_path.read_text(encoding="utf-8"))
+            if spec.get("schemaVersion") != 4:
+                findings.append({"severity": "high", "rule": "legacy-spec", "message": "pet-spec is not v4; migrate before claiming adaptive cutout, frame alignment or UI readiness", "file": "pet-spec.json", "line": 1})
+            pipeline = spec.get("assetPipeline")
+            if not isinstance(pipeline, dict) or pipeline.get("backgroundMode") != "adaptive-flood":
+                findings.append({"severity": "high", "rule": "legacy-background", "message": "asset pipeline must use v4 adaptive-flood instead of fitting a fixed key to model output", "file": "pet-spec.json", "line": 1})
+            elif pipeline.get("generationBackground") not in {"transparent-grid", "solid-chroma"}:
+                findings.append({"severity": "high", "rule": "invalid-generation-background", "message": "generationBackground must be transparent-grid or solid-chroma", "file": "pet-spec.json", "line": 1})
+            if isinstance(pipeline, dict) and ("backgroundKey" in pipeline or pipeline.get("backgroundTolerance", 0) > 48):
+                findings.append({"severity": "high", "rule": "background-fit-hack", "message": "legacy backgroundKey or excessive tolerance can hide gradients and ground shadows; regenerate the source instead", "file": "pet-spec.json", "line": 1})
+            sizing = spec.get("experience", {}).get("petSizing", {}) if isinstance(spec.get("experience"), dict) else {}
+            if not isinstance(sizing, dict) or not (180 <= sizing.get("baseWindowPx", 0) <= 260) or sizing.get("defaultScale") not in {0.65, 0.8, 1, 1.2}:
+                findings.append({"severity": "high", "rule": "pet-size-contract", "message": "pet sizing must declare a 180-260 px base window and a supported default scale", "file": "pet-spec.json", "line": 1})
+            states = spec.get("states", []) if isinstance(spec.get("states"), list) else []
+            if states and all(len(state.get("frames", [])) <= 1 for state in states if isinstance(state, dict)):
+                findings.append({"severity": "high", "rule": "static-states", "message": "all states are single-frame; the pet has no asset animation", "file": "pet-spec.json", "line": 1})
+            for state in states:
+                if isinstance(state, dict) and not state.get("triggers"):
+                    findings.append({"severity": "high", "rule": "unreachable-state", "message": f"state has no declared trigger: {state.get('id', '<unknown>')}", "file": "pet-spec.json", "line": 1})
+            interactions = spec.get("experience", {}).get("interactions", []) if isinstance(spec.get("experience"), dict) else []
+            interaction_state_ids: set[str] = set()
+            for interaction in interactions if isinstance(interactions, list) else []:
+                if not isinstance(interaction, dict):
+                    continue
+                if not str(interaction.get("emoji", "")).strip():
+                    findings.append({"severity": "high", "rule": "missing-menu-emoji", "message": f"interaction has no semantic menu emoji: {interaction.get('id', '<unknown>')}", "file": "pet-spec.json", "line": 1})
+                state_id = interaction.get("stateId")
+                if isinstance(state_id, str):
+                    interaction_state_ids.add(state_id)
+            for state in states:
+                if not isinstance(state, dict):
+                    continue
+                state_id = str(state.get("id", ""))
+                frame_count = len(state.get("frames", [])) if isinstance(state.get("frames"), list) else 0
+                triggers = state.get("triggers", []) if isinstance(state.get("triggers"), list) else []
+                if state_id == "idle" and frame_count < 4:
+                    findings.append({"severity": "high", "rule": "short-idle", "message": "idle needs 4-6 frames before CSS breathing is added", "file": "pet-spec.json", "line": 1})
+                if state_id == "blink" and frame_count != 5:
+                    findings.append({"severity": "high", "rule": "short-blink", "message": "blink must use exactly 5 aligned frames", "file": "pet-spec.json", "line": 1})
+                visible = state_id in interaction_state_ids or any(str(trigger).startswith(("pointer:", "reminder:", "edge:", "random:")) for trigger in triggers)
+                movement = state.get("direction") in {"left", "right"} or any(str(trigger).startswith("movement:") for trigger in triggers)
+                if visible and frame_count < 5:
+                    findings.append({"severity": "high", "rule": "short-visible-action", "message": f"visible action needs 5-6 frames: {state_id}", "file": "pet-spec.json", "line": 1})
+                if movement and frame_count < 6:
+                    findings.append({"severity": "high", "rule": "short-movement", "message": f"movement action needs 6-8 frames: {state_id}", "file": "pet-spec.json", "line": 1})
+            e2e_path = root / "tests" / "e2e" / "app.e2e.ts"
+            if e2e_path.is_file():
+                e2e_text = e2e_path.read_text(encoding="utf-8", errors="replace")
+                display_name = spec.get("character", {}).get("displayName")
+                if "圆圆" in e2e_text and display_name != "圆圆":
+                    findings.append({"severity": "high", "rule": "hardcoded-e2e-fixture", "message": "E2E hard-codes the template character name instead of reading the current spec", "file": "tests/e2e/app.e2e.ts", "line": 1})
+                state_ids = {state.get("id") for state in states if isinstance(state, dict)}
+                for hardcoded_state in re.findall(r"dataset\.state\s*===\s*['\"]([^'\"]+)['\"]", e2e_text):
+                    if hardcoded_state not in state_ids:
+                        findings.append({"severity": "high", "rule": "hardcoded-e2e-state", "message": f"E2E waits for a state absent from the current spec: {hardcoded_state}", "file": "tests/e2e/app.e2e.ts", "line": 1})
+            expected = {spec.get("character", {}).get("coreAsset"), *(frame for state in states if isinstance(state, dict) for frame in state.get("frames", []))}
+            expected.discard(None)
+            asset_root = root / "src" / "assets" / "pet"
+            if asset_root.is_dir():
+                actual = {path.relative_to(asset_root).as_posix() for path in asset_root.rglob("*.png")}
+                for name in sorted(expected - actual):
+                    findings.append({"severity": "high", "rule": "missing-runtime-asset", "message": f"spec asset is missing or case-mismatched: {name}", "file": "pet-spec.json", "line": 1})
+                for name in sorted(actual - expected):
+                    findings.append({"severity": "high", "rule": "orphan-runtime-asset", "message": f"runtime PNG has no state or coreAsset reference: {name}", "file": str(Path("src/assets/pet") / name), "line": 1})
+            tray_icon = root / "src" / "assets" / "tray" / "tray-icon.png"
+            if not tray_icon.is_file():
+                findings.append({"severity": "high", "rule": "missing-tray-icon", "message": "processed 32x32 PNG tray icon is missing", "file": "src/assets/tray/tray-icon.png", "line": 1})
+
+            for relative in (Path("src/renderer/dashboard/index.css"), Path("src/renderer/reminder/index.css")):
+                css_path = root / relative
+                if not css_path.is_file():
+                    continue
+                css = css_path.read_text(encoding="utf-8", errors="replace")
+                root_block = re.search(r"html\s*,\s*body\s*\{([^}]*)\}", css, re.DOTALL)
+                if not root_block or not re.search(r"overflow\s*:\s*hidden", root_block.group(1)):
+                    findings.append({"severity": "high", "rule": "native-page-scrollbar", "message": "page root must hide native Windows scrollbars; scroll only inside styled containers", "file": str(relative).replace("\\", "/"), "line": 1})
+            main_path = root / "src" / "main.ts"
+            if main_path.is_file():
+                main_text = main_path.read_text(encoding="utf-8", errors="replace")
+                if "nativeImage.createFromDataURL" in main_text:
+                    findings.append({"severity": "high", "rule": "fragile-tray-icon", "message": "tray icon is generated from a data URL; use the validated PNG derived from core-ip", "file": "src/main.ts", "line": 1})
+        except (OSError, json.JSONDecodeError):
+            findings.append({"severity": "critical", "rule": "invalid-spec", "message": "pet-spec.json is not valid JSON", "file": "pet-spec.json", "line": 1})
+
+    lock_path = root / ".build" / "activity.lock"
+    if lock_path.is_file():
+        try:
+            owner = json.loads(lock_path.read_text(encoding="utf-8"))
+            pid = owner.get("pid")
+            alive = False
+            if isinstance(pid, int) and pid > 0:
+                try:
+                    os.kill(pid, 0)
+                    alive = True
+                except OSError:
+                    alive = False
+            if not alive:
+                findings.append({"severity": "high", "rule": "stale-activity-lock", "message": f"activity lock points to a dead pid: {pid}", "file": ".build/activity.lock", "line": 1})
+        except (OSError, json.JSONDecodeError):
+            findings.append({"severity": "high", "rule": "invalid-activity-lock", "message": "activity lock is unreadable and should be recovered by the controlled runner", "file": ".build/activity.lock", "line": 1})
 
     report = {"project": str(root), "scannedFiles": scanned, "checks": checks, "findings": findings}
     rendered = json.dumps(report, ensure_ascii=False, indent=2)

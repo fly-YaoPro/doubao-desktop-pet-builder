@@ -5,8 +5,15 @@
   "requiredRights": "Confirm user owns or is authorized to use the source material before public submission.",
   "size": [512, 512],
   "anchor": { "x": 0.5, "y": 0.95 },
-  "states": [
-    "idle", "blink", "walk-left", "walk-right", "happy", "sleep",
-    "typing", "notify", "grab", "success", "fail", "peek"
-  ]
+  "v4Frames": {
+    "idle": ["idle-01.png", "idle-02.png", "idle-03.png", "idle-04.png"],
+    "blink": ["blink-01.png", "blink-02.png", "blink-03.png", "blink-04.png", "blink-05.png"],
+    "happy": ["happy-01.png", "happy-02.png", "happy-03.png", "happy-04.png", "happy-05.png"],
+    "notify": ["notify-01.png", "notify-02.png", "notify-03.png", "notify-04.png", "notify-05.png"],
+    "peek": ["peek-01.png", "peek-02.png", "peek-03.png", "peek-04.png", "peek-05.png"],
+    "pet": ["pet-01.png", "pet-02.png", "pet-03.png", "pet-04.png", "pet-05.png"],
+    "eat": ["eat-01.png", "eat-02.png", "eat-03.png", "eat-04.png", "eat-05.png"],
+    "play": ["play-01.png", "play-02.png", "play-03.png", "play-04.png", "play-05.png"]
+  },
+  "note": "Frame pairs intentionally reuse legacy fixture poses to test deterministic wiring offline; they are not a quality bar for user delivery."
 }

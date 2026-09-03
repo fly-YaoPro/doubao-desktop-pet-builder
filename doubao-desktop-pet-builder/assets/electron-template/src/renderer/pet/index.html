@@ -4,12 +4,18 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Desktop Pet</title>
+  <title>桌面宠物</title>
 </head>
 <body>
-  <main id="pet" aria-label="桌面宠物" title="拖动移动，右键打开面板">
-    <img id="pet-image" draggable="false" alt="桌面宠物">
+  <main id="pet" aria-label="桌面宠物">
+    <div id="bubble" role="status" aria-live="polite"></div>
+    <div id="motion-layer">
+      <div id="breath-layer">
+        <img id="pet-image" draggable="false" alt="桌面宠物">
+      </div>
+    </div>
     <div id="drop-hint" aria-hidden="true">放进文件口袋</div>
+    <div id="asset-error" role="alert" hidden></div>
   </main>
 </body>
 </html>
